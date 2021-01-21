@@ -1,43 +1,15 @@
 const { ApolloServer } = require('apollo-server')
-const gql = require('graphql-tag')
-const dbConenct = require('./config/dbConnect')
-const PORT = 3007
-
 const dbConnect = require('./config/dbConnect')
+const PORT = 3007
+const typeDefs = require('./graphql/typeDefs');
+const resolvers = require('./graphql/resolvers');
 
-//MONGO SCHEMA
-const Post = require('./models/Post')
-
-const typeDefs = gql`
-    type Post {
-        id: ID!
-        body: String!
-        createdAt: String!
-        username: String!
-    }
-    type Query {
-        getPosts: [Post]
-        
-    }
-`
-const resolvers = {
-    Query: {
-        getPosts: async() => {
-            try {
-                const post = await Post.deleteMany({})
-                const posts = await Post.find({})
-                return posts
-            } catch (error) {
-                throw new Error(err)
-            }
-        }
-    }
-}
 
 const server = new ApolloServer({
     typeDefs,
-    resolvers
-});
+    resolvers,
+    context: ({ req }) => ({ req })
+})
 
 dbConnect()
     .then(res => {

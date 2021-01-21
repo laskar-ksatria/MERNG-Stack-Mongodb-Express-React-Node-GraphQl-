@@ -9,8 +9,9 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-    }
-}, {versionKey: false, timestamps: {createdAt: 'CreatedAt'}})
+    },
+    createdAt: String
+}, {versionKey: false})
 
 const user = mongoose.model("User", userSchema)
 
